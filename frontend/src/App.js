@@ -63,7 +63,9 @@ function App() {
     Object.keys(form).forEach(k=>formData.append(k,form[k]));
     if(logo) formData.append("logo",logo);
 
-    const res = await axios.post("http://localhost:5000/generate",formData,{
+    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+    const res = await axios.post(`${apiUrl}/generate`,formData,{
+
       responseType:"blob",
       headers:{"Content-Type":"multipart/form-data"}
     });
