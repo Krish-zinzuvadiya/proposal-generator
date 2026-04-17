@@ -3,6 +3,7 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+
   const [logo, setLogo] = useState(null);
 
   const [form, setForm] = useState({
@@ -10,6 +11,7 @@ function App() {
     client_company: "",
     your_name: "",
     pricing: "",
+    validity: "",
 
     business_model_para1: "",
     business_model_para2: "",
@@ -51,42 +53,72 @@ function App() {
       ]).flat()
     ),
 
+    // Deliverables
     post:"", reel:"", story:""
   });
 
   const handleChange = (e) => {
-    setForm({...form,[e.target.name]:e.target.value});
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
   };
 
   const generateProposal = async () => {
-    const formData = new FormData();
-    Object.keys(form).forEach(k=>formData.append(k,form[k]));
-    if(logo) formData.append("logo",logo);
+    try {
+      const formData = new FormData();
 
-    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-    const res = await axios.post(`${apiUrl}/generate`,formData,{
+      Object.keys(form).forEach(key => {
+        formData.append(key, form[key] || "");
+      });
 
-      responseType:"blob",
-      headers:{"Content-Type":"multipart/form-data"}
-    });
+      if (logo) {
+        formData.append("logo", logo);
+      }
 
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement("a");
-    link.href=url;
-    link.setAttribute("download","Proposal.docx");
-    link.click();
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+      const res = await axios.post(`${apiUrl}/generate`, formData, {
+        responseType: "blob"
+      });
+
+      // ✅ CLEAN FILE NAME
+      const safeName = (form.client_company || "Client")
+        .replace(/[^a-z0-9 ]/gi, "")
+        .trim();
+
+      const fileName = `Complete Branding & Marketing Proposal for ${safeName} V1.0.docx`;
+
+      const file = new File([res.data], fileName, {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      });
+
+      const url = window.URL.createObjectURL(file);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.click();
+
+    } catch (err) {
+      console.error(err);
+      alert("Error generating proposal");
+    }
   };
 
   return (
     <div className="container">
 
-      <h2>📄 Proposal Generator</h2>
+      <h2>Proposal Generator</h2>
 
+      {/* LOGO */}
+      
       <div className="section">
         <h3>Upload Logo</h3>
         <input type="file" onChange={(e)=>setLogo(e.target.files[0])}/>
       </div>
 
+      {/* CLIENT */}
       <div className="section">
         <h3>Client Info</h3>
         <input name="client_name" placeholder="Client Name" onChange={handleChange}/>
@@ -94,12 +126,14 @@ function App() {
         <input name="your_name" placeholder="Your Name" onChange={handleChange}/>
       </div>
 
+      {/* BUSINESS MODEL */}
       <div className="section">
         <h3>Business Model</h3>
-        <input name="business_model_para1" placeholder="Paragraph 1"/>
-        <input name="business_model_para2" placeholder="Paragraph 2"/>
+        <input name="business_model_para1" placeholder="Paragraph 1" onChange={handleChange}/>
+        <input name="business_model_para2" placeholder="Paragraph 2" onChange={handleChange}/>
       </div>
 
+      {/* CORE */}
       <div className="section">
         <h3>Core Offerings</h3>
         {[1,2,3,4,5,6,7].map(i=>(
@@ -107,6 +141,7 @@ function App() {
         ))}
       </div>
 
+      {/* TARGET */}
       <div className="section">
         <h3>Target Audience</h3>
         {[1,2,3,4,5,6].map(i=>(
@@ -114,6 +149,7 @@ function App() {
         ))}
       </div>
 
+      {/* CURRENT */}
       <div className="section">
         <h3>Current Positioning</h3>
         {[1,2,3,4].map(i=>(
@@ -121,23 +157,46 @@ function App() {
         ))}
       </div>
 
+      {/* FUTURE */}
       <div className="section">
-        <h3>Future Vision</h3>
+        <h3>Future Positioning (The Vision)</h3>
         <textarea name="future_vision" onChange={handleChange}/>
       </div>
 
+        <div className="section">
+        Understanding Market Position & Potential Growth 👇
+      </div>
+
+      {/* STRENGTHS */}
       <div className="section">
-        <h3>Growth Opportunities</h3>
+        <h3>Strengths</h3>
+        {[1,2,3,4].map(i=>(
+          <div className="row" key={i}>
+            <input name={`strengths_bold${i}`} placeholder="Title" onChange={handleChange}/>
+            <input name={`strengths${i}`} placeholder="Description" onChange={handleChange}/>
+          </div>
+        ))}
+      </div>
+
+      {/* GROWTH */}
+      <div className="section">
+        <h3>Opportunities for Growth | Content Gaps</h3>
         {[1,2,3,4,5].map(i=>(
           <input key={i} name={`growth${i}`} placeholder={`Growth ${i}`} onChange={handleChange}/>
         ))}
       </div>
 
+<div className="section">
+        Branding & Marketing – Strategic Growth Plan 👇
+      </div>
+
+      {/* STRATEGY */}
       <div className="section">
-        <h3>Strategy</h3>
+        <h3>Business Goals</h3>
         <textarea name="strategic_para" onChange={handleChange}/>
       </div>
 
+      {/* PILLARS */}
       <div className="section">
         <h3>Content Pillars</h3>
         {[1,2,3,4,5].map(i=>(
@@ -148,11 +207,16 @@ function App() {
         ))}
       </div>
 
+      {/* MONTHS */}
       <div className="section">
-        <h3>12-Month Strategy</h3>
+        <h3>Month By Month Strategy & Ideas </h3>
 
         <div className="month-header">
-          <span>Month</span><span>Theme</span><span>Offer</span><span>Idea</span><span>Role</span>
+          <span>Month</span>
+          <span>Theme</span>
+          <span>Offer</span>
+          <span>Idea</span>
+          <span>Role</span>
         </div>
 
         {[...Array(12)].map((_,i)=>(
@@ -166,19 +230,29 @@ function App() {
         ))}
       </div>
 
+      {/* DELIVERABLES */}
       <div className="section">
         <h3>Deliverables</h3>
-        <input name="post" placeholder="Posts"/>
-        <input name="reel" placeholder="Reels"/>
-        <input name="story" placeholder="Stories"/>
+        <input name="post" placeholder="Posts" onChange={handleChange}/>
+        <input name="reel" placeholder="Reels" onChange={handleChange}/>
+        <input name="story" placeholder="Stories" onChange={handleChange}/>
+      </div>
+
+      {/* PRICING + VALIDITY */}
+      <div className="section">
+        <h3>Pricing</h3>
+        <input name="pricing" placeholder="Pricing" onChange={handleChange}/>
       </div>
 
       <div className="section">
-        <h3>Pricing</h3>
-        <input name="pricing" placeholder="Pricing"/>
+        <h3>Validity</h3>
+        <input name="validity" placeholder="Validity (Ex: 6 Months) | Only Numbers" onChange={handleChange}/>
       </div>
 
-      <button onClick={generateProposal}>Generate Proposal</button>
+
+      <button onClick={generateProposal}>
+        Generate Proposal
+      </button>
 
     </div>
   );
