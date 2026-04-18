@@ -5,7 +5,6 @@ import "./App.css";
 function App() {
 
   const [logo, setLogo] = useState(null);
-  const [copied, setCopied] = useState(false);
 
   const [form, setForm] = useState({
     client_name: "",
@@ -65,19 +64,6 @@ function App() {
     });
   };
 
-  // ✅ FIXED COPY FUNCTION (OUTSIDE)
-  const handleCopy = () => {
-    const promptText = `Write a professional branding and marketing proposal based on client inputs including strengths, growth opportunities, and strategy.`;
-
-    navigator.clipboard.writeText(promptText);
-
-    setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  };
-
   const generateProposal = async () => {
     try {
       const formData = new FormData();
@@ -96,6 +82,7 @@ function App() {
         responseType: "blob"
       });
 
+      // ✅ CLEAN FILE NAME
       const safeName = (form.client_company || "Client")
         .replace(/[^a-z0-9 ]/gi, "")
         .trim();
@@ -120,24 +107,14 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
     <div className="container">
 
       <h2>Proposal Generator</h2>
 
-      <div className="copy-global">
-      <button className="copy-btn" onClick={handleCopy}>
-        {copied ? "Copied ✅" : "Copy Prompt"}
-      </button>
-    </div>
-      {/* LOGO + COPY BUTTON */}
+      {/* LOGO */}
+      
       <div className="section">
-
-          
-        <div className="section-header">
-          <h3>Upload Logo</h3>
-        </div>
-
+        <h3>Upload Logo</h3>
         <input type="file" onChange={(e)=>setLogo(e.target.files[0])}/>
       </div>
 
@@ -186,7 +163,7 @@ function App() {
         <textarea name="future_vision" onChange={handleChange}/>
       </div>
 
-      <div className="section">
+        <div className="section">
         Understanding Market Position & Potential Growth 👇
       </div>
 
@@ -209,7 +186,7 @@ function App() {
         ))}
       </div>
 
-      <div className="section">
+<div className="section">
         Branding & Marketing – Strategic Growth Plan 👇
       </div>
 
@@ -261,26 +238,22 @@ function App() {
         <input name="story" placeholder="Stories" onChange={handleChange}/>
       </div>
 
-      {/* PRICING */}
+      {/* PRICING + VALIDITY */}
       <div className="section">
         <h3>Pricing</h3>
         <input name="pricing" placeholder="Pricing" onChange={handleChange}/>
       </div>
 
-      {/* VALIDITY */}
       <div className="section">
         <h3>Validity</h3>
         <input name="validity" placeholder="Validity (Ex: 6 Months) | Only Numbers" onChange={handleChange}/>
       </div>
 
+
       <button onClick={generateProposal}>
         Generate Proposal
       </button>
-    </div>
 
-    <div className="footer">
-    Designed & Developed by Krish for Arowians ✨
-  </div>
     </div>
   );
 }
