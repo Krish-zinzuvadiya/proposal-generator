@@ -90,7 +90,7 @@ function App() {
         formData.append("logo", logo);
       }
 
-      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+      const apiUrl = "http://127.0.0.1:5000";
 
       const res = await axios.post(`${apiUrl}/generate`, formData, {
         responseType: "blob"
@@ -114,9 +114,20 @@ function App() {
       link.click();
 
     } catch (err) {
-      console.error(err);
-      alert("Error generating proposal");
-    }
+  console.error("FULL ERROR:", err);
+
+  if (err.response && err.response.data) {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      alert(reader.result); // 🔥 real error message
+    };
+
+    reader.readAsText(err.response.data);
+  } else {
+    alert(err.message);
+  }
+}
   };
 
   return (

@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, after_this_request
 from flask_cors import CORS
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
@@ -47,7 +47,12 @@ def handle_logo(doc):
 @app.route('/generate', methods=['POST'])
 def generate():
 
-    doc = DocxTemplate("template.docx")
+    # 🔥 SAFE TEMPLATE PATH FIX
+    template_path = os.path.join(os.getcwd(), "template.docx")
+    if not os.path.exists(template_path):
+        return "Error: template.docx not found", 500
+
+    doc = DocxTemplate(template_path)
     data = request.form
 
     # 🔹 LOGO
@@ -142,9 +147,10 @@ def generate():
     download_name = f"Complete Branding & Marketing Proposal for {safe_name} V1.0.docx"
 
     # ===============================
-    # 🔹 CLEANUP FUNCTION
+    # 🔹 SAFE CLEANUP AFTER RESPONSE
     # ===============================
-    def cleanup():
+    @after_this_request
+    def cleanup(response):
         try:
             if temp_logo_path and os.path.exists(temp_logo_path):
                 os.remove(temp_logo_path)
@@ -152,16 +158,17 @@ def generate():
                 os.remove(temp_doc)
         except Exception as e:
             print("Cleanup error:", e)
+        return response
 
     # ===============================
-    # 🔹 SEND FILE
+    # 🔹 SEND FILE (FIXED)
     # ===============================
-    response = send_file(temp_doc, as_attachment=True, download_name=download_name)
-
-    # Cleanup after sending
-    cleanup()
-
-    return response
+    return send_file(
+        temp_doc,
+        as_attachment=True,
+        download_name=download_name,
+        mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
 
 
 # ===============================
