@@ -67,7 +67,279 @@ function App() {
 
   // ✅ FIXED COPY FUNCTION (OUTSIDE)
   const handleCopy = () => {
-    const promptText = `Write a professional branding and marketing proposal based on client inputs including strengths, growth opportunities, and strategy.`;
+    const promptText = `Act as a Senior Digital Marketing Strategist.
+
+I will provide you:
+
+Company Name: 
+Website: 
+
+Generate a month-wise social media strategy table for [Enter Month] focused on reels content and follower growth.
+
+Your task is to write a Business Model section for a premium proposal.
+
+Write in exactly 2 paragraphs only.
+
+Instructions:
+Maintain a professional, agency-level tone
+Keep language clear, structured, and non-generic
+Do not copy content — analyze and write business-specific insights
+Avoid long sentences
+Structure:
+
+Paragraph 1:
+Explain the business model including type (service/manufacturing), B2B/B2C nature, core operations, and how the business delivers its services/products.
+
+Paragraph 2:
+Explain infrastructure and operational strength including systems, processes, quality control, and how the business ensures consistency and reliability.
+
+Output Rules:
+No headings
+No bullet points
+Only 2 paragraphs
+Each paragraph short and clean (3–4 lines max)
+
+
+---------------------------------------------------------------
+
+Core Offerings
+
+Write 6–8 bullet points covering:
+
+Main services or products offered
+Keep points short, clear, and industry-specific
+Target Audience
+
+Write 6–8 bullet points covering:
+
+Key customer segments (B2B + B2C if applicable)
+Focus on real buyers
+Instructions
+Use bullet format only (•)
+Each point one line
+Keep it short and clean
+Avoid repetition
+Output Rules
+First Core Offerings
+Then Target Audience
+Clean proposal format
+
+--------------------------------------------------------------
+
+### **Current Positioning**
+
+Write 3–4 short bullet points describing:
+
+* How the brand is currently positioned
+* Focus on operations, branding, and digital presence
+
+---
+
+### **Future Positioning (The Vision)**
+
+Write:
+
+* One line: “[Company Name] can evolve into:”
+* Then one strong positioning statement (1 line)
+
+---
+
+### **Instructions**
+
+* Keep points short (one line each)
+* Be specific, not generic
+* Maintain strategic tone
+* No long explanations
+
+---
+
+### **Output Rules**
+
+* First Current Positioning (with bullets)
+* Then Future Positioning (1 statement)
+* Clean and premium format
+
+--------------------------------------------------------------
+
+### **Strengths**
+
+Write 4–5 bullet points in this format:
+
+**Heading:** Short explanation (one line)
+
+---
+
+### **Instructions**
+
+* Each point must have:
+
+  * A short heading
+  * One-line explanation
+* Keep it concise and structured
+* Focus on real business strengths (services, demand, scalability, audience)
+* Avoid long sentences
+
+---
+
+### **Output Rules**
+
+* Use bullet format
+* Keep it clean and proposal-ready
+* No extra explanation
+
+--------------------------------------------------------------
+
+### **Opportunities for Growth**
+
+### **Content Gaps:**
+
+Write 5–6 bullet points covering:
+
+* Key gaps in branding, content, and marketing
+* Focus on growth opportunities
+
+---
+
+### **Instructions**
+
+* Keep each point short (one line)
+* Use clear and simple wording
+* Focus on gaps, not strengths
+* Avoid explanations
+
+---
+
+### **Output Rules**
+
+* Use bullet format (•)
+* Clean and structured
+* Proposal-ready format
+
+--------------------------------------------------------------
+
+### **Business Goals (Paragraph Format)**
+
+Write one strong paragraph in this style:
+
+“Establish [Company Name] as a [brand positioning] while generating consistent [lead type], strengthening trust through [key strengths], increasing visibility in [target market], and improving conversions through [content/strategy approach].”
+
+---
+
+### **Instructions**
+
+* Follow the **exact sentence structure**
+* Replace only:
+
+  * Company Name
+  * Industry-specific positioning
+  * Lead type (B2B / B2C / both)
+  * Trust factors (quality, service, expertise, etc.)
+  * Target market
+  * Content/strategy approach
+* Keep it in **one paragraph only**
+* Do not change tone or flow
+
+---
+
+### **Output Rules**
+
+* One paragraph only
+* Same format every time
+* Clean, premium, proposal-ready
+
+--------------------------------------------------------------
+
+### **Content Pillars (Fixed Format)**
+
+Write 5 points in this exact format:
+
+1. **[Pillar Title]:** [3–5 word explanation]
+
+---
+
+### **Instructions**
+
+* Keep **exactly 5 pillars**
+* Each explanation must be **very short (3–5 words)**
+* Use **industry-relevant titles**
+* Maintain same structure every time
+* Do not write long descriptions
+
+---
+
+### **Output Rules**
+
+* Numbered format (1 to 5)
+* One line per point
+* Clean and consistent formatting
+
+
+--------------------------------------------------------------
+
+### **Advanced Month-wise Strategy Table**
+
+Create a **premium 6–12 month strategy table** in this format:
+
+| Month | Focus Theme | Campaign / Offer | Content Ideas | Special Roles |
+
+---
+
+### **Instructions**
+
+* Generate strategy for **[X months]**
+* Keep tone **premium, strategic, and brand-focused**
+* Each month should feel like a **campaign, not random content**
+
+---
+
+### **Column Guidelines**
+
+**Month:**
+
+* Use “Month 1, Month 2…” format
+
+**Focus Theme:**
+
+* Use only **brand or content themes** (e.g., Digital Foundation, Product Depth, Global Reach, Trust, Seasonal, Innovation)
+* ❌ Do NOT use goals like Lead Generation, Sales, Conversion (in focus theme row)
+
+**Campaign / Offer:**
+
+* Give a **campaign-style name** (2–4 words, premium sounding)
+
+**Content Ideas:**
+
+* 1–2 strong content directions (short but meaningful)
+
+**Special Roles:**
+
+* Assign a role (e.g., Strategy Lead, Content Creator, Social Media Manager)
+
+---
+
+### **Rules**
+
+* Make it **campaign-driven, not basic**
+* Focus Theme must be **creative/strategic, not performance-based**
+* Avoid generic words like “posting”
+* Align with business type
+* Follow flow:
+
+  * Early months: Awareness & Reach
+  * Mid months: Engagement & Authority
+  * Later months: Trust & Growth
+
+---
+
+### **Output Rules**
+
+* Table only
+* Clean formatting
+* No extra explanation
+
+
+
+`;
 
     navigator.clipboard.writeText(promptText);
 
