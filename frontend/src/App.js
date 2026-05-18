@@ -379,7 +379,7 @@ Create a **premium 6–12 month strategy table** in this format:
         .replace(/[^a-z0-9 ]/gi, "")
         .trim();
 
-      const fileName = `Complete Branding & Marketing Proposal for ${safeName} V1.0.docx`;
+      const fileName = `Strategic & Branding Proposal for ${safeName} V1.0.docx`;
 
       const file = new File([res.data], fileName, {
         type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
