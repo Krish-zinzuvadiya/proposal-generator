@@ -363,17 +363,18 @@ Create a **premium 6–12 month strategy table** in this format:
       }
 
 
+      const backendUrl = process.env.REACT_APP_API_URL || "https://proposal-generator-51pl.onrender.com";
       const res = await axios.post(
-  "https://proposal-generator-51pl.onrender.com/generate",
-  formData,
-  {
-    responseType: "blob",
-    timeout: 60000,
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  }
-);
+        `${backendUrl}/generate`,
+        formData,
+        {
+          responseType: "blob",
+          timeout: 60000,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
 
       const safeName = (form.client_company || "Client")
         .replace(/[^a-z0-9 ]/gi, "")

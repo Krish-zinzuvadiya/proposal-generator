@@ -5,6 +5,7 @@ from docx.shared import Mm
 from datetime import datetime
 import os
 import uuid
+import tempfile
 
 app = Flask(__name__)
 CORS(app)
@@ -34,7 +35,8 @@ def handle_logo(doc):
     if not image or image.filename == "":
         return None, None
 
-    temp_name = f"temp_logo_{uuid.uuid4().hex}.png"
+    temp_dir = tempfile.gettempdir()
+    temp_name = os.path.join(temp_dir, f"temp_logo_{uuid.uuid4().hex}.png")
     image.save(temp_name)
 
     return InlineImage(doc, temp_name, width=Mm(40)), temp_name
@@ -48,7 +50,15 @@ def handle_logo(doc):
 def generate():
 
     # 🔥 SAFE TEMPLATE PATH FIX
-    template_path = os.path.join(os.getcwd(), "template.docx")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    template_path = os.path.join(base_dir, "template.docx")
+    if not os.path.exists(template_path):
+        # Fallback to parent directory if in /api folder
+        template_path = os.path.join(os.path.dirname(base_dir), "template.docx")
+    if not os.path.exists(template_path):
+        # Fallback to current working directory
+        template_path = os.path.join(os.getcwd(), "template.docx")
+
     if not os.path.exists(template_path):
         return "Error: template.docx not found", 500
 
@@ -135,7 +145,8 @@ def generate():
     # ===============================
     doc.render(context)
 
-    temp_doc = f"proposal_{uuid.uuid4().hex}.docx"
+    temp_dir = tempfile.gettempdir()
+    temp_doc = os.path.join(temp_dir, f"proposal_{uuid.uuid4().hex}.docx")
     doc.save(temp_doc)
 
     # ===============================
