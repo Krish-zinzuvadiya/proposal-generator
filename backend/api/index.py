@@ -46,6 +46,10 @@ def handle_logo(doc):
 # 🔹 MAIN ROUTE
 # ===============================
 
+@app.route('/', methods=['GET'])
+def index():
+    return {"status": "active", "message": "Proposal Generator Backend is running!"}
+
 @app.route('/generate', methods=['POST'])
 def generate():
 
